@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "news-sample"
+version = "0.1.0"
+description = ""
+authors = ["fayzikuloff.b <fayzikuloff.b@gmail.com>"]
+readme = "README.md"
+packages = [{include = "news_sample"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2"
+djangorestframework = "^3.14.0"
+pillow = "^9.5.0"
+markdown = "^3.4.3"
+django-filter = "^23.1"
+drf-spectacular = {extras = ["sidecar"], version = "^0.26.1"}
+python-dotenv = "^1.0.0"
+psycopg2-binary = "^2.9.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

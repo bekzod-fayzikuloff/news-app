@@ -1,0 +1,26 @@
+/media/
+/static/
+*.sqlite3
+
+# Python and others
+__pycache__
+*.pyc
+.DS_Store
+*.swp
+/venv/
+/.data/
+/tmp/
+/.vagrant/
+/Vagrantfile.local
+node_modules/
+/npm-debug.log
+/.idea/
+.vscode
+coverage
+.python-version
+
+docker-compose.dev.yaml
+src/media
+.idea/
+.env
+*/__pychache__*
