@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Tag, News, View
+
+from .models import News, Tag, View
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    search_fields = ("title", )
+    search_fields = ("title",)
 
 
 @admin.register(News)

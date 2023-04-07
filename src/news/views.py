@@ -1,7 +1,7 @@
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.response import Response
 
 from .models import News
 from .serializers import NewsSerializer, NewsStatsSerializer
@@ -12,7 +12,7 @@ class NewsViewSet(
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
@@ -29,7 +29,5 @@ class NewsViewSet(
         return super().retrieve(request, *args, **kwargs)
 
     def get_serializer_class(self, *args, **kwargs):
-        serializers = {
-            "stats": NewsStatsSerializer
-        }
+        serializers = {"stats": NewsStatsSerializer}
         return serializers.get(self.action, self.serializer_class)
