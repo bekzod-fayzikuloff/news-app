@@ -1,0 +1,15 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    margin-bottom: 17px;
+    width: 28rem;
+}
+
+.detail__root {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

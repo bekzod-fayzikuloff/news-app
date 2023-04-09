@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404, render
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -5,6 +6,22 @@ from rest_framework.response import Response
 
 from .models import News
 from .serializers import NewsSerializer, NewsStatsSerializer
+
+
+def news_list(request: Request, slug=None) -> Response:
+    return render(request, template_name="news/list.html")
+
+
+def news_detail(request: Request, pk: int) -> Response:
+    news = get_object_or_404(News, pk=pk)
+    news.view.quantity += 1
+    news.view.save()
+    return render(request, template_name="news/detail.html", context={"news": news})
+
+
+def news_stats(request: Request, pk: int) -> Response:
+    news = get_object_or_404(News, pk=pk)
+    return render(request, template_name="news/detail_stats.html", context={"news": news})
 
 
 class NewsViewSet(

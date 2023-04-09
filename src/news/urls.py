@@ -13,6 +13,14 @@ docs_urlpatterns = [
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 ]
 
-urlpatterns = [path("docs/", include(docs_urlpatterns))]
+api_urlpatterns = [path("docs/", include(docs_urlpatterns))]
 
-urlpatterns += news_router.urls
+urlpatterns = [
+    path("news/", views.news_list),
+    path("news/<int:pk>/", views.news_detail),
+    path("news/<int:pk>/stats/", views.news_stats, name="news_stat"),
+    path("news/<slug:slug>/", views.news_list, name="tags_list"),
+    path("api/", include(api_urlpatterns)),
+]
+
+api_urlpatterns += news_router.urls
