@@ -46,11 +46,51 @@ async function initNewsRender(rootUrl) {
     })
 }
 
+
+function initDetail() {
+
+    const dislikeBtn = document.querySelector("#dislike")
+    const likeBtn = document.querySelector("#like")
+
+    const likes = localStorage.getItem("likes")
+    const dislikes = localStorage.getItem("dislikes")
+
+    if (likes && likes.includes(window.location.pathname)) {
+        likeBtn.classList.add("liked")
+    } if (dislikes && dislikes.includes(window.location.pathname)) {
+        dislikeBtn.classList.add("disliked")
+    }
+
+    dislikeBtn.addEventListener('click', () => {
+        const dislikes = JSON.parse(localStorage.getItem('dislikes'))
+        if (dislikes && dislikes.includes(window.location.pathname)) {
+            localStorage.removeItem("dislikes")
+            localStorage.setItem("dislikes", JSON.stringify(dislikes.filter(dislike => dislike !== window.location.pathname)))
+            dislikeBtn.classList.remove("disliked")
+            return
+        }
+        localStorage.setItem('dislikes', JSON.stringify([window.location.pathname]))
+        dislikeBtn.classList.add("disliked")
+    })
+    likeBtn.addEventListener('click', () => {
+        const likes = JSON.parse(localStorage.getItem('likes'))
+        if (likes && likes.includes(window.location.pathname)) {
+            localStorage.removeItem("likes")
+            localStorage.setItem("likes", JSON.stringify(likes.filter(likes => likes !== window.location.pathname)))
+            likeBtn.classList.remove("liked")
+            return
+        }
+        localStorage.setItem('likes', JSON.stringify([window.location.pathname]))
+        likeBtn.classList.add("liked")
+    })
+
+}
+
 (async function initScript() {
     if (window.location.pathname === "/news/") {
-       await initNewsRender("http://127.0.0.1:8000/api/news/")
-    } else if (/[0-9]/.test(window.location.pathname)){
-        console.log("Detail page")
+        await initNewsRender("http://127.0.0.1:8000/api/news/")
+    } else if (/[0-9]/.test(window.location.pathname)) {
+        initDetail()
     } else {
         const splitPath = window.location.pathname.split("/")
         await initNewsRender(`http://127.0.0.1:8000/api/news/tags/${splitPath[splitPath.length - 2]}/`)

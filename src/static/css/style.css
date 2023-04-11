@@ -13,3 +13,12 @@
     display: flex;
     justify-content: center;
 }
+
+.liked {
+    fill: red;
+}
+
+.disliked {
+    fill: black;
+    background-color: gray;
+}
