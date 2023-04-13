@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .models import News
-from .serializers import NewsSerializer, NewsStatsSerializer
+from .models import Dislike, Like, News
+from .serializers import DislikeUpdateSerializer, LikeUpdateSerializer, NewsSerializer, NewsStatsSerializer
 
 
 def news_list(request: Request, slug=None) -> Response:
@@ -60,3 +60,19 @@ class NewsViewSet(
     def get_serializer_class(self, *args, **kwargs):
         serializers = {"stats": NewsStatsSerializer}
         return serializers.get(self.action, self.serializer_class)
+
+
+class LikeViewSet(
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Like.objects.all()
+    serializer_class = LikeUpdateSerializer
+
+
+class DislikeViewSet(
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Dislike.objects.all()
+    serializer_class = DislikeUpdateSerializer

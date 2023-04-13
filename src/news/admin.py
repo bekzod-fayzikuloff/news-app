@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import News, Tag, View
+from .models import Dislike, Like, News, Tag, View
 
 
 @admin.register(Tag)
@@ -15,4 +15,14 @@ class NewsAdmin(admin.ModelAdmin):
 
 @admin.register(View)
 class ViewAdmin(admin.ModelAdmin):
+    search_fields = ("news__title", "news__tags__title")
+
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    search_fields = ("news__title", "news__tags__title")
+
+
+@admin.register(Dislike)
+class DislikeAdmin(admin.ModelAdmin):
     search_fields = ("news__title", "news__tags__title")

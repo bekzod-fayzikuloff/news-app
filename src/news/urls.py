@@ -6,6 +6,8 @@ from . import views
 
 news_router = SimpleRouter()
 news_router.register("news", views.NewsViewSet, basename="news")
+news_router.register("likes", views.LikeViewSet, basename="likes")
+news_router.register("dislikes", views.DislikeViewSet, basename="dislike")
 
 docs_urlpatterns = [
     path("schema/", SpectacularAPIView.as_view(), name="schema"),

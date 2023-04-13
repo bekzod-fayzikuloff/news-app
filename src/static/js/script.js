@@ -14,7 +14,6 @@ const renderPost = (post) => {
 }
 
 async function initNewsRender(rootUrl) {
-    // let url = "http://127.0.0.1:8000/api/news/"
 
     let renderPosts;
     const loadChuck = async (url) => {
@@ -51,37 +50,72 @@ function initDetail() {
 
     const dislikeBtn = document.querySelector("#dislike")
     const likeBtn = document.querySelector("#like")
+    const postId = document.querySelector("#post_id").innerHTML
 
     const likes = localStorage.getItem("likes")
     const dislikes = localStorage.getItem("dislikes")
 
     if (likes && likes.includes(window.location.pathname)) {
         likeBtn.classList.add("liked")
-    } if (dislikes && dislikes.includes(window.location.pathname)) {
+    }
+    if (dislikes && dislikes.includes(window.location.pathname)) {
         dislikeBtn.classList.add("disliked")
     }
 
+    const changeAction = async (url, data) => {
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            return await response.json();
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     dislikeBtn.addEventListener('click', () => {
+        let dislikesCount = document.querySelector("#dislike_count")
+
         const dislikes = JSON.parse(localStorage.getItem('dislikes'))
         if (dislikes && dislikes.includes(window.location.pathname)) {
             localStorage.removeItem("dislikes")
             localStorage.setItem("dislikes", JSON.stringify(dislikes.filter(dislike => dislike !== window.location.pathname)))
             dislikeBtn.classList.remove("disliked")
+            changeAction(`http://127.0.0.1:8000/api/dislikes/${postId}/`, {quantity: +dislikesCount.innerHTML ? dislikesCount.innerHTML - 1 : 0}).then(r => {
+                dislikesCount.innerHTML = r.quantity
+            })
             return
         }
         localStorage.setItem('dislikes', JSON.stringify([window.location.pathname]))
         dislikeBtn.classList.add("disliked")
+        changeAction(`http://127.0.0.1:8000/api/dislikes/${postId}/`, {quantity: +dislikesCount.innerHTML + 1}).then(r => {
+            dislikesCount.innerHTML = r.quantity
+        })
     })
+
     likeBtn.addEventListener('click', () => {
+        let likesCount = document.querySelector("#like_count")
+
         const likes = JSON.parse(localStorage.getItem('likes'))
         if (likes && likes.includes(window.location.pathname)) {
             localStorage.removeItem("likes")
             localStorage.setItem("likes", JSON.stringify(likes.filter(likes => likes !== window.location.pathname)))
             likeBtn.classList.remove("liked")
+            changeAction(`http://127.0.0.1:8000/api/likes/${postId}/`, {quantity: +likesCount.innerHTML ? likesCount.innerHTML - 1 : 0}).then(r => {
+                likesCount.innerHTML = r.quantity
+            })
             return
         }
         localStorage.setItem('likes', JSON.stringify([window.location.pathname]))
         likeBtn.classList.add("liked")
+        changeAction(`http://127.0.0.1:8000/api/likes/${postId}/`, {quantity: +likesCount.innerHTML + 1}).then(r => {
+            likesCount.innerHTML = r.quantity
+        })
     })
 
 }

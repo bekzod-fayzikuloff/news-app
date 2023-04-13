@@ -29,6 +29,30 @@ class News(models.Model):
         return f"Новость: {self.title}"
 
 
+class Like(models.Model):
+    quantity = models.PositiveIntegerField("Количество лайков", default=0)
+    news = models.OneToOneField(to=News, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Лайк"
+        verbose_name_plural = "Лайки"
+
+    def __str__(self) -> str:
+        return f"Лайки новости: {self.news}"
+
+
+class Dislike(models.Model):
+    quantity = models.PositiveIntegerField("Количество дизлайков", default=0)
+    news = models.OneToOneField(to=News, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Дизлайк"
+        verbose_name_plural = "Дизлайки"
+
+    def __str__(self) -> str:
+        return f"Дизлайки новости: {self.news}"
+
+
 class View(models.Model):
     quantity = models.PositiveIntegerField("Количество просмотров", default=0)
     news = models.OneToOneField(to=News, on_delete=models.CASCADE)
@@ -44,4 +68,5 @@ class View(models.Model):
 @receiver(post_save, sender=News)
 def create_profile(sender, **kwargs) -> None:  # noqa
     if kwargs.get("created"):
-        View.objects.create(news=kwargs.get("instance"))
+        for model in [View, Like, Dislike]:
+            model.objects.create(news=kwargs.get("instance"))

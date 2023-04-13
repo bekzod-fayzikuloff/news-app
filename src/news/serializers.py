@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import News
+from .models import Dislike, Like, News
 
 
 class NewsSerializer(serializers.ModelSerializer):
@@ -20,3 +20,15 @@ class NewsStatsSerializer(serializers.ModelSerializer):
         model = News
         fields = "__all__"
         depth = 1
+
+
+class LikeUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ("quantity",)
+
+
+class DislikeUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dislike
+        fields = ("quantity",)
